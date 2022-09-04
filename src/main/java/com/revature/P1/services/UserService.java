@@ -5,24 +5,24 @@ import java.security.MessageDigest;
 import java.math.*;
 
 public class UserService {
-    private final AccountDAO accountDAO;
+    private final UserDAO userDAO;
 
 
-    public UserService(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
 
     }
 
 
-    public Account login(String username, String pass) {
-        Account account = AccountDAO.getUserByUsernameAndPassword(username, pass);
+    public User login(String username, String pass) {
+        User account = userDAO.getUserByUsernameAndPassword(username, pass);
 
         if (account == null) throw new InvalidUserException("\nIncorrect username or password.");
         return account;
     }
 
     public boolean isDuplicateUsername(String username) {
-        if (accountDAO.getUsername(username) != null) throw new InvalidUserException("\nSorry, " + username + " already been taken :(");
+        if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nSorry, " + username + " already been taken :(");
         return false;
     }
 
@@ -42,12 +42,12 @@ public class UserService {
         return true;
     }
 
-    public void saveAcc(Account account) {
-        accountDAO.saveAccount(account);
+    public void saveAcc(User account) {
+        userDAO.saveUser(account);
     }
 
-    public List<Account> getAllAccounts() {
-        return accountDAO.getAll();
+    public List<User> getAllAccounts() {
+        return userDAO.getAll();
     }
 
     public static byte[] getSHA(String input){
