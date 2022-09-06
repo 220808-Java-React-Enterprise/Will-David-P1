@@ -1,8 +1,19 @@
 package com.revature.P1.services;
 
+import com.revature.P1.daos.UserDAO;
+import com.revature.P1.dtos.requests.LoginRequest;
+import com.revature.P1.dtos.requests.NewUserRequest;
+import com.revature.P1.dtos.responses.PrincipalResponse;
+import com.revature.P1.models.ERSUsers;
+import com.revature.P1.utils.custom_exceptions.AuthenticationException;
+import com.revature.P1.utils.custom_exceptions.InvalidRequestException;
+import com.revature.P1.utils.custom_exceptions.InvalidUserException;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.math.*;
+import java.util.List;
+import java.util.UUID;
 
 public class UserService {
     private final UserDAO userDAO;
@@ -13,12 +24,28 @@ public class UserService {
 
     }
 
+    public ERSUsers register(NewUserRequest request) {
+        ERSUsers user = null;
 
-    public User login(String username, String pass) {
-        User account = userDAO.getUserByUsernameAndPassword(username, pass);
+        if (isValidUsername(request.getUsername())) {
+            if (!isDuplicateUsername(request.getUsername())) {
+                if (isValidPassword(request.getPassword1())) {
+                    if (isSamePassword(request.getPassword1(), request.getPassword2())) {
+                        user = new ERSUsers(UUID.randomUUID().toString(), request.getUsername(), request.getEmail(), request.getPassword1(), request.getFirst(), request.getLast(), request.isActive(), request.getRole());
+                        userDAO.save(user);
+                    }
+                }
+            }
+        }
 
-        if (account == null) throw new InvalidUserException("\nIncorrect username or password.");
-        return account;
+        return user;
+    }
+
+    public PrincipalResponse login(LoginRequest request) {
+        ERSUsers account = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
+
+        if (account == null) throw new AuthenticationException("\nIncorrect username or password.");
+        return new PrincipalResponse(account.getuID(), account.getuName(), account.getEmail(), account.getFirst(), account.getLast(), account.isActive(), account.getRole());
     }
 
     public boolean isDuplicateUsername(String username) {
@@ -42,11 +69,15 @@ public class UserService {
         return true;
     }
 
-    public void saveAcc(User account) {
-        userDAO.saveUser(account);
+    public ERSUsers getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
     }
 
-    public List<User> getAllAccounts() {
+    public void saveAcc(ERSUsers account) {
+        userDAO.save(account);
+    }
+
+    public List<ERSUsers> getAllAccounts() {
         return userDAO.getAll();
     }
 
