@@ -33,7 +33,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //resp.getWriter().write(mapper.writeValueAsString(request));
+        //resp.getWriter().write(mapper.writeValueAsString(req));
 
         try {
             NewUserRequest request = mapper.readValue(req.getInputStream(), NewUserRequest.class);
@@ -61,6 +61,9 @@ public class UserServlet extends HttpServlet {
         String token = req.getHeader("Authorization");
         PrincipalResponse principal = tokenService.extractRequesterDetails(token);
 
+        resp.setContentType("application/json");
+        resp.getWriter().write(mapper.writeValueAsString(principal));
+
         try {
             if (principal.getRole().equals("ADMIN")) {
                 String username = req.getParameter("username");
@@ -80,5 +83,7 @@ public class UserServlet extends HttpServlet {
         } catch (InvalidRequestException e) {
             resp.setStatus(404);
         }
+
+
     }
 }

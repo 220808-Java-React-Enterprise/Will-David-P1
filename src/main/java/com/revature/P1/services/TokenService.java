@@ -31,7 +31,7 @@ public class TokenService {
                 .claim("email", subject.getEmail())
                 .claim("first", subject.getFirst())
                 .claim("last", subject.getLast())
-                .claim("active", subject.isActive())
+                .claim("active", String.valueOf(subject.isActive()))
                 .signWith(jwtConfig.getSigAlg(), jwtConfig.getSigningKey());
 
         return tokenBuilder.compact();
