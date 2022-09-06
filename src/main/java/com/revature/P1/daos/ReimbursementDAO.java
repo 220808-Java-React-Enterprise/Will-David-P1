@@ -35,6 +35,15 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
     @Override
     public void update(ERSReimbursements obj) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursements SET statusID = ? WHERE rID = ?");
+            ps.setString(1, obj.getStatusID());
+            ps.setString(2, obj.getReimID());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred trying to update the table");
+        }
 
     }
 
@@ -71,6 +80,44 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements WHERE rid = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("rID"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getBlob("receipt"), rs.getString("paymentID"), rs.getString("authorID"), rs.getString("resolverID"), rs.getString("statusID"), rs.getString("typeID"));
+                reimbursements.add(reim);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to save to the database.");
+        }
+
+        return reimbursements;
+    }
+
+    public List<ERSReimbursements> getAllByStatusID(String id) {
+        List<ERSReimbursements> reimbursements = new ArrayList<>();
+
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements WHERE statusID = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("rID"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getBlob("receipt"), rs.getString("paymentID"), rs.getString("authorID"), rs.getString("resolverID"), rs.getString("statusID"), rs.getString("typeID"));
+                reimbursements.add(reim);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to save to the database.");
+        }
+
+        return reimbursements;
+    }
+
+    public List<ERSReimbursements> getAllByTypeID(String id) {
+        List<ERSReimbursements> reimbursements = new ArrayList<>();
+
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements WHERE typeID = ?");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
