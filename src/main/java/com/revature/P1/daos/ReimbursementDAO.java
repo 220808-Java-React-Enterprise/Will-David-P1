@@ -1,5 +1,5 @@
 package com.revature.P1.daos;
-<<<<<<< Updated upstream
+
 import com.revature.P1.models.*;
 import java.util.*;
 import java.sql.Connection;
@@ -25,25 +25,29 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
             ps.setString(6, obj.getPaymentID());
             ps.setString(7, obj.getAuthorID());
             ps.setString(8, obj.getResolverID());
-            ps.setString(9,obj.getStatusID());
-            ps.setString(10,obj.getTypeID());
+            ps.setString(9, obj.getStatusID());
+            ps.setString(10, obj.getTypeID());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when tyring to save to the database.");
         }
     }
+
     @Override
     public void update(ERSReimbursements obj) {
 
     }
+
     @Override
     public void delete(String id) {
 
     }
+
     @Override
     public ERSReimbursements getById(String id) {
         return null;
     }
+
     @Override
     public List<ERSReimbursements> getAll() {
         List<ERSReimbursements> reimbursements = new ArrayList<>();
@@ -53,7 +57,7 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ERSReimbursements reim = new ERSReimbursements(rs.getString("rID"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getBlob("receipt"), rs.getString("paymentID"),rs.getString("authorID"),rs.getString("resolverID"),rs.getString("statusID"),rs.getString("typeID"));
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("rID"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getBlob("receipt"), rs.getString("paymentID"), rs.getString("authorID"), rs.getString("resolverID"), rs.getString("statusID"), rs.getString("typeID"));
                 reimbursements.add(reim);
             }
         } catch (SQLException e) {
@@ -62,8 +66,23 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
         return reimbursements;
     }
-=======
+    public List<ERSReimbursements> getAllByReimID(String id) {
+        List<ERSReimbursements> reimbursements = new ArrayList<>();
 
-public class ReimbursementDAO {
->>>>>>> Stashed changes
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements WHERE rid = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("rID"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getBlob("receipt"), rs.getString("paymentID"), rs.getString("authorID"), rs.getString("resolverID"), rs.getString("statusID"), rs.getString("typeID"));
+                reimbursements.add(reim);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to save to the database.");
+        }
+
+        return reimbursements;
+    }
 }
+
