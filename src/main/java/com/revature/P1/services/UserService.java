@@ -1,5 +1,7 @@
 package com.revature.P1.services;
 
+import com.revature.P1.utils.custom_exceptions.InvalidUserException;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.math.*;
@@ -14,8 +16,8 @@ public class UserService {
     }
 
 
-    public User login(String username, String pass) {
-        User account = userDAO.getUserByUsernameAndPassword(username, pass);
+    public ERSUsers login(String username, String pass) {
+        ERSUsers account = userDAO.getUserByUsernameAndPassword(username, pass);
 
         if (account == null) throw new InvalidUserException("\nIncorrect username or password.");
         return account;
@@ -42,11 +44,11 @@ public class UserService {
         return true;
     }
 
-    public void saveAcc(User account) {
+    public void saveAcc(ERSUsers account) {
         userDAO.saveUser(account);
     }
 
-    public List<User> getAllAccounts() {
+    public List<ERSUsers> getAllAccounts() {
         return userDAO.getAll();
     }
 
