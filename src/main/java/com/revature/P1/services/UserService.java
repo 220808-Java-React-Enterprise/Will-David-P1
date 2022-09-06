@@ -5,6 +5,9 @@ import com.revature.P1.utils.custom_exceptions.InvalidUserException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.math.*;
+import com.revature.P1.daos.*;
+import com.revature.P1.models.*;
+import java.util.*;
 
 public class UserService {
     private final UserDAO userDAO;
@@ -45,7 +48,7 @@ public class UserService {
     }
 
     public void saveAcc(ERSUsers account) {
-        userDAO.saveUser(account);
+        userDAO.save(account);
     }
 
     public List<ERSUsers> getAllAccounts() {
