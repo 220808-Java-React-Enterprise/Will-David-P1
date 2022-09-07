@@ -37,6 +37,16 @@ public class UserDAO implements CrudDAO<ERSUsers> {
 
     @Override
     public void delete(String id) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("DELETE * FROM users WHERE userID = ?");
+            ps.executeQuery();
+
+
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to delete from the database.");
+        }
+
 
     }
 

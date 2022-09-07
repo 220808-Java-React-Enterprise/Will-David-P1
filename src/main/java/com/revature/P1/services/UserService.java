@@ -78,6 +78,9 @@ public class UserService {
         }
         return hexString.toString();
     }
+    public void deleteUser(String p){
+        userDAO.delete(p);
+    }
 }
 
 
