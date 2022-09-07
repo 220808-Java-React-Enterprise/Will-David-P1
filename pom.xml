@@ -70,6 +70,8 @@
                     <version>2.2</version>
                     <configuration>
                         <url>http://localhost:8080/manager/text</url>
+                        <username> admin </username>
+                        <password> revature </password>
                         <server>LocalTomcat</server>
                         <path>/P1</path>
                         <update>true</update>

@@ -9,7 +9,7 @@ import io.jsonwebtoken.Jwts;
 import java.util.Date;
 
 public class TokenService {
-    private JwtConfig jwtConfig;
+    private static JwtConfig jwtConfig;
 
     public TokenService() {
         super();
@@ -19,7 +19,7 @@ public class TokenService {
         this.jwtConfig = jwtConfig;
     }
 
-    public String generateToken(PrincipalResponse subject) {
+    public static String generateToken(PrincipalResponse subject) {
         long now = System.currentTimeMillis();
         JwtBuilder tokenBuilder = Jwts.builder()
                 .setId(subject.getuID())

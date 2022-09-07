@@ -1,6 +1,7 @@
 package com.revature.P1.services;
 
 import com.revature.P1.utils.custom_exceptions.AuthenticationException;
+import com.revature.P1.utils.custom_exceptions.InvalidRequestException;
 import com.revature.P1.utils.custom_exceptions.InvalidUserException;
 
 import java.nio.charset.StandardCharsets;
@@ -12,6 +13,7 @@ import java.util.*;
 import com.revature.P1.dtos.requests.LoginRequest;
 import com.revature.P1.dtos.requests.NewUserRequest;
 import com.revature.P1.dtos.responses.PrincipalResponse;
+import com.revature.P1.dtos.requests.*;
 
 public class UserService {
     private final UserDAO userDAO;
@@ -63,6 +65,11 @@ public class UserService {
 
         return user;
     }
+    public ERSUsers getById(String id) {
+        ERSUsers user = userDAO.getById(id);
+        if (user == null) throw new InvalidRequestException("User not found");
+        return user;
+    }
 
     public boolean isDuplicateUsername(String username) {
         if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nSorry, " + username + " already been taken :(");
@@ -109,8 +116,21 @@ public class UserService {
         return userDAO.getUserByUsername(p);
     }
 
-    public void resetPassword(ERSUsers p){
-        userDAO.update(p);
+    public void resetPassword(ResetPasswordReq r) {
+        if(isValidPassword(r.getPassword1())){
+            if(isSamePassword(r.getPassword1(),r.getPassword2())){
+                userDAO.resetP(r.getId(), r.getPassword1());
+            }
+        }
+
+    }
+    public void deactivate(UserRequest req) {
+        userDAO.setStatus(req.getuID(), false, userDAO.getRoleId(req.getRole()));
+
+    }
+    public void activate(UserRequest req) {
+
+        userDAO.setStatus(req.getuID(), true, userDAO.getRoleId(req.getRole()));
 
     }
 }

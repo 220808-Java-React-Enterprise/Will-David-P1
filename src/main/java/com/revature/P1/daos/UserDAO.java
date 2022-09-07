@@ -32,15 +32,7 @@ public class UserDAO implements CrudDAO<ERSUsers> {
 
     @Override
     public void update(ERSUsers obj) {
-        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
-            ps.setString(1, obj.getPassword());
-            ps.setString(2, obj.getuID());
-            ps.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new InvalidSQLException("An error occurred trying to update the table");
-        }
 
     }
 
@@ -82,6 +74,29 @@ public class UserDAO implements CrudDAO<ERSUsers> {
         }
 
         return userList;
+    }
+    public void resetP(String id, String password) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
+            ps.setString(1, password);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+    }
+    public String getRoleId(String role){
+        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM user_roles WHERE role = ?");
+            ps.setString(1,role);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("role_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return null;
     }
 
     public ERSUsers getUserByUsername(String username) {
@@ -131,5 +146,17 @@ public class UserDAO implements CrudDAO<ERSUsers> {
         }
 
         return null;
+    }
+    public void setStatus(String id, boolean status, String role) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection( )) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET is_active = ?,role_id = ? WHERE user_id = ?");
+            ps.setBoolean(1, status);
+            ps.setString(2, role);
+            ps.setString(3, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
     }
 }
