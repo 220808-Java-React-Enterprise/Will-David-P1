@@ -1,23 +1,26 @@
 package com.revature.P1.models;
 import java.util.*;
 import java.sql.Blob;
+import java.sql.Date;
 public class ERSReimbursements {
     private String reimID;
     private int amount;
     private Date submitted;
     private Date resolved;
-    private Blob receipt;
+    private String description;
+    private int receipt;
     private String paymentID, authorID, resolverID, statusID, typeID;
 
     public ERSReimbursements(){
 
     }
 
-    public ERSReimbursements(String reimID, int amount, Date submitted, Date resolved, Blob receipt, String paymentID, String authorID, String resolverID, String statusID, String typeID) {
+    public ERSReimbursements(String reimID, int amount, Date submitted, Date resolved, String description, int receipt, String paymentID, String authorID, String resolverID, String statusID, String typeID) {
         this.reimID = reimID;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
+        this.description = description;
         this.receipt = receipt;
         this.paymentID = paymentID;
         this.authorID = authorID;
@@ -58,11 +61,19 @@ public class ERSReimbursements {
         this.resolved = resolved;
     }
 
-    public Blob getReceipt() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getReceipt() {
         return receipt;
     }
 
-    public void setReceipt(Blob receipt) {
+    public void setReceipt(int receipt) {
         this.receipt = receipt;
     }
 
@@ -113,6 +124,7 @@ public class ERSReimbursements {
                 ", amount=" + amount +
                 ", submitted=" + submitted +
                 ", resolved=" + resolved +
+                ", description='" + description + '\'' +
                 ", receipt=" + receipt +
                 ", paymentID='" + paymentID + '\'' +
                 ", authorID='" + authorID + '\'' +
