@@ -1,38 +1,75 @@
 package com.revature.P1.dtos.responses;
 
 public class PrincipalResponse {
-    private String id;
-    private String username;
+    private String uID;
+    private String uName, email, first, last;
+    private boolean isActive;
     private String role;
 
     public PrincipalResponse() {
 
     }
 
-    public PrincipalResponse(String id, String username, String role) {
-        this.id = id;
-        this.username = username;
+    public PrincipalResponse(String uID, String uName, String email, String first, String last, boolean isActive, String role) {
+        this.uID = uID;
+        this.uName = uName;
+        this.email = email;
+        this.first = first;
+        this.last = last;
+        this.isActive = isActive;
         this.role = role;
     }
 
-    public String getId() {
-        return id;
+    public String getuID() {
+        return uID;
     }
 
-    public String getUsername() {
-        return username;
+    public void setuID(String uID) {
+        this.uID = uID;
+    }
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String getRole() {
         return role;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setRole(String role) {
@@ -41,9 +78,13 @@ public class PrincipalResponse {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
+        return "PrincipalResponse{" +
+                "uID='" + uID + '\'' +
+                ", uName='" + uName + '\'' +
+                ", email='" + email + '\'' +
+                ", first='" + first + '\'' +
+                ", last='" + last + '\'' +
+                ", isActive=" + isActive +
                 ", role='" + role + '\'' +
                 '}';
     }

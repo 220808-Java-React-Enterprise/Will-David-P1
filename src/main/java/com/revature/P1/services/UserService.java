@@ -1,5 +1,6 @@
 package com.revature.P1.services;
 
+import com.revature.P1.utils.custom_exceptions.AuthenticationException;
 import com.revature.P1.utils.custom_exceptions.InvalidUserException;
 
 import java.nio.charset.StandardCharsets;
@@ -8,6 +9,9 @@ import java.math.*;
 import com.revature.P1.daos.*;
 import com.revature.P1.models.*;
 import java.util.*;
+import com.revature.P1.dtos.requests.LoginRequest;
+import com.revature.P1.dtos.requests.NewUserRequest;
+import com.revature.P1.dtos.responses.PrincipalResponse;
 
 public class UserService {
     private final UserDAO userDAO;
@@ -19,22 +23,14 @@ public class UserService {
     }
 
 
-    public ERSUsers login(String username, String pass) {
-        ERSUsers account = userDAO.getUserByUsernameAndPassword(username, pass);
+    public PrincipalResponse login(LoginRequest request) {
+        ERSUsers account = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
 
-        if (account == null) throw new InvalidUserException("\nIncorrect username or password.");
-        return account;
+        if (account == null) throw new AuthenticationException("\nIncorrect username or password.");
+        return new PrincipalResponse(account.getuID(), account.getuName(), account.getEmail(), account.getFirst(), account.getLast(), account.isActive(), account.getRole());
     }
 
-    public boolean isDuplicateUsername(String username) {
-        if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nSorry, " + username + " already been taken :(");
-        return false;
-    }
 
-    public boolean isSamePassword(String pass, String pass2) {
-        if (!pass.equals(pass2)) throw new InvalidUserException("\nPassword do not match");
-        return true;
-    }
 
     public boolean isValidUsername(String username) {
         if (!username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"))
@@ -49,6 +45,33 @@ public class UserService {
 
     public void saveAcc(ERSUsers account) {
         userDAO.save(account);
+    }
+
+    public ERSUsers register(NewUserRequest request) {
+        ERSUsers user = null;
+
+        if (isValidUsername(request.getUsername())) {
+            if (!isDuplicateUsername(request.getUsername())) {
+                if (isValidPassword(request.getPassword1())) {
+                    if (isSamePassword(request.getPassword1(), request.getPassword2())) {
+                        user = new ERSUsers(UUID.randomUUID().toString(), request.getUsername(), request.getEmail(), request.getPassword1(), request.getFirst(), request.getLast(), request.isActive(), request.getRole());
+                        userDAO.save(user);
+                    }
+                }
+            }
+        }
+
+        return user;
+    }
+
+    public boolean isDuplicateUsername(String username) {
+        if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nSorry, " + username + " already been taken :(");
+        return false;
+    }
+
+    public boolean isSamePassword(String pass, String pass2) {
+        if (!pass.equals(pass2)) throw new InvalidUserException("\nPassword do not match");
+        return true;
     }
 
     public List<ERSUsers> getAllAccounts() {
@@ -80,6 +103,15 @@ public class UserService {
     }
     public void deleteUser(String p){
         userDAO.delete(p);
+    }
+
+    public ERSUsers getUserByUsername(String p){
+        return userDAO.getUserByUsername(p);
+    }
+
+    public void resetPassword(ERSUsers p){
+        userDAO.update(p);
+
     }
 }
 

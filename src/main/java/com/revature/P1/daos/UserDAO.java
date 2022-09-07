@@ -32,6 +32,15 @@ public class UserDAO implements CrudDAO<ERSUsers> {
 
     @Override
     public void update(ERSUsers obj) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
+            ps.setString(1, obj.getPassword());
+            ps.setString(2, obj.getuID());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred trying to update the table");
+        }
 
     }
 
