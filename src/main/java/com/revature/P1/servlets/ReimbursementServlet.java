@@ -48,7 +48,8 @@ public class ReimbursementServlet extends HttpServlet {
             if (path[3].equals("newrequest")) {
                 java.util.Date utilDate = new java.util.Date();
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), 10, sqlDate, sqlDate, "hello", 100000, "123", principal.getuID(), "a", "pending", type);
+                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), 10, sqlDate, sqlDate, "hello", 100000, "123", principal.getuID(), "a", "1", type);
+                System.out.println(reim);
                 reimbursementService.reimSave(reim);
                 resp.setStatus(200);
                 resp.setContentType("application/json");
