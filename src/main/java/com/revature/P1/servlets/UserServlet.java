@@ -8,15 +8,13 @@ import com.revature.P1.services.TokenService;
 import com.revature.P1.services.UserService;
 import com.revature.P1.utils.custom_exceptions.InvalidRequestException;
 import com.revature.P1.utils.custom_exceptions.ResourceConflictException;
-import com.revature.P1.utils.database.ConnectionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.HttpRetryException;
-import java.sql.SQLException;
+
 import java.util.List;
 
 public class UserServlet extends HttpServlet {

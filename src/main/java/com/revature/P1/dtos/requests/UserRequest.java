@@ -14,18 +14,22 @@ public class UserRequest {
     }
 
     public String getuID() {
+
         return uID;
     }
 
     public void setuID(String uID) {
+
         this.uID = uID;
     }
 
     public String getRole() {
+
         return role;
     }
 
     public void setRole(String role) {
+
         this.role = role;
     }
 

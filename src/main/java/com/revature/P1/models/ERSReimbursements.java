@@ -1,6 +1,5 @@
 package com.revature.P1.models;
-import java.util.*;
-import java.sql.Blob;
+
 import java.sql.Date;
 public class ERSReimbursements {
     private String reimID;
@@ -31,18 +30,22 @@ public class ERSReimbursements {
     }
 
     public String getReimID() {
+
         return reimID;
     }
 
     public void setReimID(String reimID) {
+
         this.reimID = reimID;
     }
 
     public int getAmount() {
+
         return amount;
     }
 
     public void setAmount(int amount) {
+
         this.amount = amount;
     }
 

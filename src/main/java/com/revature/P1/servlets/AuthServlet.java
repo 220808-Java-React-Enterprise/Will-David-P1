@@ -2,7 +2,6 @@ package com.revature.P1.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.P1.dtos.requests.LoginRequest;
-import com.revature.P1.dtos.requests.NewUserRequest;
 import com.revature.P1.dtos.responses.PrincipalResponse;
 import com.revature.P1.services.TokenService;
 import com.revature.P1.services.UserService;

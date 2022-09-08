@@ -1,5 +1,4 @@
 import com.revature.P1.utils.custom_exceptions.AuthenticationException;
-import com.revature.P1.utils.custom_exceptions.InvalidRequestException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +6,6 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 import com.revature.P1.services.*;
 import com.revature.P1.daos.*;
-import com.revature.P1.servlets.*;
 import com.revature.P1.dtos.requests.*;
 import com.revature.P1.models.*;
 
@@ -71,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_isValidRegistration_givenValidCredentials() {
+    public void test_isValidRegistration_givenGoodCredentials() {
         NewUserRequest request = new NewUserRequest(
                 "Userrrr999",
                 "myemail@gmail.com",
@@ -86,7 +84,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = AuthenticationException.class)
-    public void test_isInvalidLogin_givenIncorrectCredentials() {
+    public void test_isInvalidLogin_givenBadCredentials() {
         UserService spiedSut = Mockito.spy(user);
         LoginRequest invalidReq = new LoginRequest("username1", "P@ssw0rd");
         when(spiedSut.isValidUsername(invalidReq.getUsername())).thenReturn(true);
@@ -96,7 +94,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = AuthenticationException.class)
-    public void test_isInvalidLogin_givenInactiveUser() {
+    public void test_isInvalidLogin_givenInactive() {
         String username = "Userrrr999";
         String password = "P!ssw0rd";
         ERSUsers inactiveUser = new ERSUsers(

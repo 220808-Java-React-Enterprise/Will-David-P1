@@ -1,10 +1,8 @@
 package com.revature.P1.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.P1.dtos.requests.NewUserRequest;
 import com.revature.P1.dtos.responses.PrincipalResponse;
 import com.revature.P1.models.ERSReimbursements;
-import com.revature.P1.models.ERSUsers;
 import com.revature.P1.services.ReimbursementService;
 import com.revature.P1.services.TokenService;
 import com.revature.P1.services.UserService;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class ReimbursementServlet extends HttpServlet {

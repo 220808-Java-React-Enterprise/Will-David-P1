@@ -3,7 +3,6 @@ package com.revature.P1.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.P1.dtos.requests.ResetPasswordReq;
 import com.revature.P1.dtos.responses.PrincipalResponse;
-import com.revature.P1.models.ERSUsers;
 import com.revature.P1.services.TokenService;
 import com.revature.P1.services.UserService;
 import com.revature.P1.utils.custom_exceptions.InvalidRequestException;

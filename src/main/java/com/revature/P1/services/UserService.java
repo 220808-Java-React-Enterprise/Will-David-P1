@@ -94,9 +94,7 @@ public class UserService {
         }
 
     }
-    /*public List<ERSUsers> getAllById(String id) {
-        return userDAO.getById(id);
-    }*/
+
 
     public static byte[] getSHA(String input){
         try{

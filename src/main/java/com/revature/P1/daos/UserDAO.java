@@ -2,7 +2,6 @@ package com.revature.P1.daos;
 
 import com.revature.P1.utils.custom_exceptions.InvalidSQLException;
 import com.revature.P1.models.ERSUsers;
-import com.revature.P1.utils.custom_exceptions.InvalidSQLException;
 import com.revature.P1.utils.database.ConnectionFactory;
 
 import java.sql.Connection;
