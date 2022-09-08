@@ -37,6 +37,9 @@ public class UserServlet extends HttpServlet {
 
         try {
             NewUserRequest request = mapper.readValue(req.getInputStream(), NewUserRequest.class);
+            if (!request.getRole().equals("x")||!request.getRole().equals("y")) {
+                resp.setStatus(404);
+            }
 
             String[] path = req.getRequestURI().split("/");
 
@@ -47,6 +50,7 @@ public class UserServlet extends HttpServlet {
                 resp.getWriter().write(mapper.writeValueAsString(newUser.getuID()));
             } else {
                 System.out.println("No");
+                resp.setStatus(404);
             }
 
         } catch (InvalidRequestException e) {
@@ -65,7 +69,7 @@ public class UserServlet extends HttpServlet {
         resp.getWriter().write(mapper.writeValueAsString(principal));
 
         try {
-            if (principal.getRole().equals("ADMIN")) {
+            if (principal.getRole().equals("z")) {
                 String username = req.getParameter("username");
 
                 resp.setContentType("application/json");

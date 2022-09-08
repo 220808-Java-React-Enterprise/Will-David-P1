@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="9" failures="0" name="com.revature.P1.services.UserServiceTest" time="0.814" errors="0" skipped="0">
+<testsuite tests="9" failures="0" name="com.revature.P1.services.UserServiceTest" time="0.831" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_333.jdk/Contents/Home/jre/lib"/>
@@ -64,13 +64,13 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidUsername_GivenBad" time="0.648"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidUsername_GivenBad" time="0.651"/>
   <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isSamePassword_GivenBad" time="0"/>
   <testcase classname="com.revature.P1.services.UserServiceTest" name="test_IsValidPassword_GivenGoodPassword" time="0"/>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidRegistration_givenValidCredentials" time="0.025"/>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidUsername_GivenGood" time="0.001"/>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidPassword_GivenBadPass" time="0"/>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isInvalidLogin_givenInactiveUser" time="0.011"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidUsername_GivenGood" time="0"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isInvalidLogin_givenInactive" time="0.013"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidRegistration_givenGoodCredentials" time="0.02"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isValidPassword_GivenBadPass" time="0.001"/>
   <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isSamePassword_GivenGood" time="0"/>
-  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isInvalidLogin_givenIncorrectCredentials" time="0.129"/>
+  <testcase classname="com.revature.P1.services.UserServiceTest" name="test_isInvalidLogin_givenBadCredentials" time="0.146"/>
 </testsuite>

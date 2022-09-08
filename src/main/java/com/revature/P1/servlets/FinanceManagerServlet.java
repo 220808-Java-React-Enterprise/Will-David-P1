@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ public class FinanceManagerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getHeader("Authorization");
         PrincipalResponse principal = tokenService.extractRequesterDetails(token);
+        String pendOrMan = req.getHeader("PendingOrManaged");
 
         resp.setContentType("application/json");
 
@@ -46,12 +48,31 @@ public class FinanceManagerServlet extends HttpServlet {
             if (path[3].equals("viewreimbs")) {
                 if (principal.getRole().equals("y")) {
                     List<ERSReimbursements> reims = reimbursementService.listAllReimbursements();
-                    resp.setStatus(200);
-                    resp.setContentType("application/json");
-                    resp.getWriter().write(mapper.writeValueAsString(reims));
+                    if (pendOrMan.equals("Pending")) {
+                        List<ERSReimbursements> sortedReim = new ArrayList<ERSReimbursements>();
+                        for (ERSReimbursements i : reims) {
+                            if (i.getResolverID().equals("None")) {
+                                sortedReim.add(i);
+                            }
+                        }
+                        resp.setStatus(200);
+                        resp.setContentType("application/json");
+                        resp.getWriter().write(mapper.writeValueAsString(sortedReim));
+                    } else if (pendOrMan.equals("Managed")) {
+                        List<ERSReimbursements> sortedReim = new ArrayList<ERSReimbursements>();
+                        for (ERSReimbursements i : reims) {
+                            if (!i.getResolverID().equals("None")) {
+                                sortedReim.add(i);
+                            }
+                        }
+                        resp.setStatus(200);
+                        resp.setContentType("application/json");
+                        resp.getWriter().write(mapper.writeValueAsString(sortedReim));
+                    }
                 }
 
             } else {
+                resp.setStatus(403);
                 System.out.println("No");
             }
 
@@ -88,10 +109,13 @@ public class FinanceManagerServlet extends HttpServlet {
                         reimbursementService.updateStatus(reimID, principal.getuName(), "3");
                         resp.getWriter().write("Rejected");
                     }
+                } else {
+                    resp.setStatus(403);
                 }
 
             } else {
                 System.out.println("No");
+                resp.setStatus(404);
             }
 
         } catch (InvalidRequestException e) {

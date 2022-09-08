@@ -50,7 +50,7 @@ public class ReimbursementServlet extends HttpServlet {
             if (path[3].equals("newrequest")) {
                 java.util.Date utilDate = new java.util.Date();
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), amount, sqlDate, sqlDate, description, 100000, "123", principal.getuID(), "a", "1", type);
+                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), amount, sqlDate, sqlDate, description, 100000, "123", principal.getuID(), "None", "1", type);
                 System.out.println(reim);
                 reimbursementService.reimSave(reim);
                 resp.setStatus(200);
@@ -58,6 +58,7 @@ public class ReimbursementServlet extends HttpServlet {
                 resp.getWriter().write(mapper.writeValueAsString(reim));
             } else {
                 System.out.println("No");
+                resp.setStatus(404);
             }
 
         } catch (InvalidRequestException e) {
@@ -83,6 +84,7 @@ public class ReimbursementServlet extends HttpServlet {
                 resp.getWriter().write(mapper.writeValueAsString(reims));
             } else {
                 System.out.println("No");
+                resp.setStatus(404);
             }
 
         } catch (NullPointerException e) {

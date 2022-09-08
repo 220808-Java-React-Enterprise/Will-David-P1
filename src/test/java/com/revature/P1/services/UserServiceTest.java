@@ -1,6 +1,7 @@
 package com.revature.P1.services;
 
 import com.revature.P1.utils.custom_exceptions.AuthenticationException;
+import com.revature.P1.utils.custom_exceptions.InvalidRequestException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,6 +64,7 @@ public class UserServiceTest {
         Assert.assertTrue(flag);
     }
 
+
     @Test
     public void test_isSamePassword_GivenBad() {
         String pass = "Revature123@";
@@ -71,34 +73,23 @@ public class UserServiceTest {
         Assert.assertTrue(flag);
     }
 
+
     @Test
-    public void test_isValidRegistration_givenValidCredentials() {
+    public void test_isValidRegistration_givenGoodCredentials() {
         NewUserRequest request = new NewUserRequest(
-                "Userrrr999",
+                "Userrr999",
                 "myemail@gmail.com",
                 "P!ssw0rd",
                 "P!ssw0rd",
                 "David",
                 "Burr",
-                true,
                 "User"
         );
         user.register(request);
     }
-
     @Test(expected = AuthenticationException.class)
-    public void test_isInvalidLogin_givenIncorrectCredentials() {
-        UserService spiedSut = Mockito.spy(user);
-        LoginRequest invalidReq = new LoginRequest("username1", "P@ssw0rd");
-        when(spiedSut.isValidUsername(invalidReq.getUsername())).thenReturn(true);
-        when(spiedSut.isValidPassword(invalidReq.getPassword())).thenReturn(true);
-        when(mockUserDao.getUserByUsernameAndPassword(invalidReq.getUsername(), invalidReq.getPassword())).thenReturn(null);
-        user.login(invalidReq);
-    }
-
-    @Test(expected = AuthenticationException.class)
-    public void test_isInvalidLogin_givenInactiveUser() {
-        String username = "Userrrr999";
+    public void test_isInvalidLogin_givenInactive() {
+        String username = "User999";
         String password = "P!ssw0rd";
         ERSUsers inactiveUser = new ERSUsers(
                 "5748fdhs9",
@@ -117,4 +108,16 @@ public class UserServiceTest {
 
 
     }
+
+    @Test(expected = AuthenticationException.class)
+    public void test_isInvalidLogin_givenBadCredentials() {
+        UserService spiedSut = Mockito.spy(user);
+        LoginRequest invalidReq = new LoginRequest("username1", "P@ssw0rd");
+        when(spiedSut.isValidUsername(invalidReq.getUsername())).thenReturn(true);
+        when(spiedSut.isValidPassword(invalidReq.getPassword())).thenReturn(true);
+        when(mockUserDao.getUserByUsernameAndPassword(invalidReq.getUsername(), invalidReq.getPassword())).thenReturn(null);
+        user.login(invalidReq);
+    }
+
+
 }

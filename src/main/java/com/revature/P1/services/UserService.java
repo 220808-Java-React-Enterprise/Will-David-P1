@@ -32,7 +32,7 @@ public class UserService {
             if (!isDuplicateUsername(request.getUsername())) {
                 if (isValidPassword(request.getPassword1())) {
                     if (isSamePassword(request.getPassword1(), request.getPassword2())) {
-                        user = new ERSUsers(UUID.randomUUID().toString(), request.getUsername(), request.getEmail(), request.getPassword1(), request.getFirst(), request.getLast(), request.isActive(), request.getRole());
+                        user = new ERSUsers(UUID.randomUUID().toString(), request.getUsername(), request.getEmail(), request.getPassword1(), request.getFirst(), request.getLast(), false, request.getRole());
                         userDAO.save(user);
                     }
                 }

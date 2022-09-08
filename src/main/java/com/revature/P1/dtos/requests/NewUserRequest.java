@@ -11,22 +11,19 @@ public class NewUserRequest {
 
     private String last;
 
-    private boolean isActive;
-
     private String role;
 
     public NewUserRequest() {
 
     }
 
-    public NewUserRequest(String username, String email, String password1, String password2, String first, String last, boolean isActive, String role) {
+    public NewUserRequest(String username, String email, String password1, String password2, String first, String last, String role) {
         this.username = username;
         this.email = email;
         this.password1 = password1;
         this.password2 = password2;
         this.first = first;
         this.last = last;
-        this.isActive = isActive;
         this.role = role;
     }
 
@@ -78,14 +75,6 @@ public class NewUserRequest {
         this.last = last;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
     public String getRole() {
         return role;
     }
@@ -103,7 +92,6 @@ public class NewUserRequest {
                 ", password2='" + password2 + '\'' +
                 ", first='" + first + '\'' +
                 ", last='" + last + '\'' +
-                ", isActive=" + isActive +
                 ", role='" + role + '\'' +
                 '}';
     }
