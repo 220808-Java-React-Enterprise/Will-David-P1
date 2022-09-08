@@ -40,6 +40,8 @@ public class ReimbursementServlet extends HttpServlet {
         String token = req.getHeader("User");
         PrincipalResponse principal = tokenService.extractRequesterDetails(token);
         String type = req.getHeader("ReimType");
+        String description = req.getHeader("Description");
+        int amount = Integer.parseInt(req.getHeader("Amount"));
 
         try {
 
@@ -48,7 +50,7 @@ public class ReimbursementServlet extends HttpServlet {
             if (path[3].equals("newrequest")) {
                 java.util.Date utilDate = new java.util.Date();
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), 10, sqlDate, sqlDate, "hello", 100000, "123", principal.getuID(), "a", "1", type);
+                ERSReimbursements reim = new ERSReimbursements(UUID.randomUUID().toString(), amount, sqlDate, sqlDate, description, 100000, "123", principal.getuID(), "a", "1", type);
                 System.out.println(reim);
                 reimbursementService.reimSave(reim);
                 resp.setStatus(200);
@@ -64,5 +66,29 @@ public class ReimbursementServlet extends HttpServlet {
             resp.setStatus(409);
         }
 
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = req.getHeader("User");
+        PrincipalResponse principal = tokenService.extractRequesterDetails(token);
+
+        try {
+            String[] path = req.getRequestURI().split("/");
+
+            if (path[3].equals("view")) {
+                resp.setStatus(200);
+                resp.setContentType("application/json");
+                List<ERSReimbursements> reims = reimbursementService.getAllByUserID(principal.getuID());
+                resp.getWriter().write(mapper.writeValueAsString(reims));
+            } else {
+                System.out.println("No");
+            }
+
+        } catch (NullPointerException e) {
+            resp.setStatus(401); // UNAUTHORIZED
+        } catch (InvalidRequestException e) {
+            resp.setStatus(404);
+        }
     }
 }

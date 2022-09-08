@@ -121,4 +121,28 @@ public class UserDAO implements CrudDAO<ERSUsers> {
 
         return null;
     }
+
+    public void setStatus(String id, boolean status) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection( )) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET active = ? WHERE user_id = ?");
+            ps.setBoolean(1, status);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+    }
+
+    public void resetP(String id, String password) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
+            ps.setString(1, password);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+    }
 }

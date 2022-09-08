@@ -1,6 +1,7 @@
 package com.revature.P1.daos;
 
 import com.revature.P1.models.ERSReimbursements;
+import com.revature.P1.models.ERSUsers;
 import com.revature.P1.utils.custom_exceptions.InvalidSQLException;
 import com.revature.P1.utils.database.ConnectionFactory;
 
@@ -31,6 +32,11 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when tyring to save to the database.");
         }
+    }
+
+    @Override
+    public void update(ERSReimbursements obj) {
+
     }
 
     public List<ERSReimbursements> getAllByReimID(String id) {
@@ -90,9 +96,37 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
         return reimbursements;
     }
 
-    @Override
-    public void update(ERSReimbursements obj) {
+    public List<ERSReimbursements> getAllByUserID(String id) {
+        List<ERSReimbursements> reimbursements = new ArrayList<>();
 
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements WHERE author_id = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {         //(reimb_id, amount, submitted, resolved, description, receipt, payment_id, author_id, resolver_id, status_id, type_id)
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("reimb_id"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getString("description"), rs.getInt("receipt"), rs.getString("payment_id"), rs.getString("author_id"), rs.getString("resolver_id"), rs.getString("status_id"), rs.getString("type_id"));
+                reimbursements.add(reim);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to save to the database.");
+        }
+
+        return reimbursements;
+    }
+
+
+    public void updateStatus(String reimID, String resolver, String status) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursements SET status_id = ?, resolver_id = ? WHERE reimb_id = ?");
+            ps.setString(1, status);
+            ps.setString(2, resolver);
+            ps.setString(3, reimID);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred trying to update the table");
+        }
     }
 
     @Override
@@ -107,6 +141,21 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
     @Override
     public List<ERSReimbursements> getAll() {
-        return null;
+        List<ERSReimbursements> reimList = new ArrayList<>();
+
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM reimbursements");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ERSReimbursements reim = new ERSReimbursements(rs.getString("reimb_id"), rs.getInt("amount"), rs.getDate("submitted"), rs.getDate("resolved"), rs.getString("description"), rs.getInt("receipt"), rs.getString("payment_id"), rs.getString("author_id"), rs.getString("resolver_id"), rs.getString("status_id"), rs.getString("type_id"));
+                reimList.add(reim);
+            }
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when tyring to save to the database.");
+        }
+
+        return reimList;
     }
 }

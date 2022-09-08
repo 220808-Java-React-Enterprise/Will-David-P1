@@ -3,6 +3,7 @@ package com.revature.P1.services;
 import com.revature.P1.daos.UserDAO;
 import com.revature.P1.dtos.requests.LoginRequest;
 import com.revature.P1.dtos.requests.NewUserRequest;
+import com.revature.P1.dtos.requests.ResetPasswordReq;
 import com.revature.P1.dtos.responses.PrincipalResponse;
 import com.revature.P1.models.ERSUsers;
 import com.revature.P1.utils.custom_exceptions.AuthenticationException;
@@ -45,6 +46,7 @@ public class UserService {
         ERSUsers account = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
 
         if (account == null) throw new AuthenticationException("\nIncorrect username or password.");
+        if (!account.isActive()) throw new AuthenticationException("\nAccount not yet approved.");
         return new PrincipalResponse(account.getuID(), account.getuName(), account.getEmail(), account.getFirst(), account.getLast(), account.isActive(), account.getRole());
     }
 
@@ -79,6 +81,19 @@ public class UserService {
 
     public List<ERSUsers> getAllAccounts() {
         return userDAO.getAll();
+    }
+
+    public void activate(String id, boolean status) {
+        userDAO.setStatus(id, status);
+    }
+
+    public void resetPassword(ResetPasswordReq r) {
+        if(isValidPassword(r.getPassword1())){
+            if(isSamePassword(r.getPassword1(),r.getPassword2())){
+                userDAO.resetP(r.getId(), r.getPassword1());
+            }
+        }
+
     }
 
     public static byte[] getSHA(String input){

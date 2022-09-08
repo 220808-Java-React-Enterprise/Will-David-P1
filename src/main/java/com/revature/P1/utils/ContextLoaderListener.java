@@ -5,10 +5,7 @@ import com.revature.P1.daos.UserDAO;
 import com.revature.P1.services.ReimbursementService;
 import com.revature.P1.services.TokenService;
 import com.revature.P1.services.UserService;
-import com.revature.P1.servlets.AuthServlet;
-import com.revature.P1.servlets.ReimbursementServlet;
-import com.revature.P1.servlets.TestServlet;
-import com.revature.P1.servlets.UserServlet;
+import com.revature.P1.servlets.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -23,6 +20,8 @@ public class ContextLoaderListener implements ServletContextListener{
         UserServlet userServlet = new UserServlet(mapper, new TokenService(new JwtConfig()), new UserService(new UserDAO()));
         AuthServlet authServlet = new AuthServlet(mapper, new TokenService(new JwtConfig()), new UserService(new UserDAO()));
         ReimbursementServlet reimbursementServlet = new ReimbursementServlet(mapper, new TokenService(new JwtConfig()), new UserService(new UserDAO()), new ReimbursementService(new ReimbursementDAO()));
+        FinanceManagerServlet financeManagerServlet = new FinanceManagerServlet(mapper, new TokenService(new JwtConfig()), new UserService(new UserDAO()), new ReimbursementService(new ReimbursementDAO()));
+        AdminServlet adminServlet = new AdminServlet(mapper, new TokenService(new JwtConfig()), new UserService(new UserDAO()));
 
 
         ServletContext context = sce.getServletContext();
@@ -30,6 +29,8 @@ public class ContextLoaderListener implements ServletContextListener{
         context.addServlet("UserServlet", userServlet).addMapping("/users/*");
         context.addServlet("AuthServlet", authServlet).addMapping("/auth");
         context.addServlet("ReimbursementServlet", reimbursementServlet).addMapping("/reimbursements/*");
+        context.addServlet("FinanceManagerServlet", financeManagerServlet).addMapping("/financemanager/*");
+        context.addServlet("AdminServlet", adminServlet).addMapping("/admin/*");
 
     }
 

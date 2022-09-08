@@ -1,6 +1,7 @@
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/servlets/TestServlet.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/dtos/requests/NewUserRequest.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/models/ERSReimbursementTypes.java
+/Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/dtos/requests/ResetPasswordReq.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/daos/UserDAO.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/servlets/UserServlet.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/utils/ContextLoaderListener.java
@@ -19,8 +20,10 @@
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/utils/custom_exceptions/AuthenticationException.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/utils/custom_exceptions/InvalidUserException.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/daos/CrudDAO.java
+/Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/servlets/AdminServlet.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/models/ERSUserRoles.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/models/ERSUsers.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/servlets/ReimbursementServlet.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/dtos/requests/LoginRequest.java
+/Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/servlets/FinanceManagerServlet.java
 /Users/wsmith324/Desktop/Revature/Will-David-P1/src/main/java/com/revature/P1/utils/JwtConfig.java

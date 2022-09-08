@@ -13,8 +13,8 @@ public class ReimbursementService {
         this.rDAO = rDAO;
     }
 
-    public void updateStatus(ERSReimbursements p){
-        rDAO.update(p);
+    public void updateStatus(String reimID, String resolver, String status){
+        rDAO.updateStatus(reimID, resolver, status);
 
     }
     public List<ERSReimbursements> listAllByStatus(String p){
@@ -25,6 +25,9 @@ public class ReimbursementService {
     }
     public List<ERSReimbursements> listAllReimbursements(){
         return rDAO.getAll();
+    }
+    public List<ERSReimbursements> getAllByUserID(String id){
+        return rDAO.getAllByUserID(id);
     }
     public void reimSave(ERSReimbursements p) {
         rDAO.save(p);
