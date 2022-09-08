@@ -47,7 +47,8 @@ public class UserServlet extends HttpServlet {
                 ERSUsers newUser = userService.register(request);
                 resp.setStatus(200);
                 resp.setContentType("application/json");
-                resp.getWriter().write(mapper.writeValueAsString(newUser.getuID()));
+                //resp.getWriter().write(mapper.writeValueAsString(newUser.getuID()));
+                resp.getWriter().write(mapper.writeValueAsString("Account created successfully! Please wait while an admin validates your account."));
             } else {
                 System.out.println("No");
                 resp.setStatus(404);

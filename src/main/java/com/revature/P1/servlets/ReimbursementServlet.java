@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,7 +82,13 @@ public class ReimbursementServlet extends HttpServlet {
                 resp.setStatus(200);
                 resp.setContentType("application/json");
                 List<ERSReimbursements> reims = reimbursementService.getAllByUserID(principal.getuID());
-                resp.getWriter().write(mapper.writeValueAsString(reims));
+                List<ERSReimbursements> sorted = new ArrayList<ERSReimbursements>();
+                for (ERSReimbursements i : reims) {
+                    if (i.getStatusID().equals("1")) {
+                        sorted.add(i);
+                    }
+                }
+                resp.getWriter().write(mapper.writeValueAsString(sorted));
             } else {
                 System.out.println("No");
                 resp.setStatus(404);
