@@ -36,15 +36,6 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
     @Override
     public void update(ERSReimbursements obj) {
-        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE reimbursements SET statusID = ? WHERE rID = ?");
-            ps.setString(1, obj.getStatusID());
-            ps.setString(2, obj.getReimID());
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new InvalidSQLException("An error occurred trying to update the table");
-        }
 
     }
 
@@ -57,10 +48,22 @@ public class ReimbursementDAO implements CrudDAO<ERSReimbursements> {
 
 
         } catch (SQLException e) {
-            throw new InvalidSQLException("An error occurred when tyring to delete from the database.");
+            throw new InvalidSQLException("An error occurred when trying to delete from the database.");
         }
 
 
+    }
+    public void updateStatus(String reimID, String resolver, String status) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE reimbursements SET status_id = ?, resolver_id = ? WHERE reimb_id = ?");
+            ps.setString(1, status);
+            ps.setString(2, resolver);
+            ps.setString(3, reimID);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred trying to update the table");
+        }
     }
 
     @Override

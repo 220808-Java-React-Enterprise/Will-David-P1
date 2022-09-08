@@ -11,11 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class UserDAO implements CrudDAO<ERSUsers> {
     @Override
     public void save(ERSUsers obj) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO users (id, username, email, password, first, last, active, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO users (user_id, username, email, password, first, last, active, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, obj.getuID());
             ps.setString(2, obj.getuName());
             ps.setString(3, obj.getEmail());
@@ -33,13 +34,12 @@ public class UserDAO implements CrudDAO<ERSUsers> {
     @Override
     public void update(ERSUsers obj) {
 
-
     }
 
     @Override
     public void delete(String id) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("DELETE * FROM users WHERE userID = ?");
+            PreparedStatement ps = con.prepareStatement("DELETE * FROM users WHERE user_id = ?");
             ps.executeQuery();
 
 
@@ -47,8 +47,6 @@ public class UserDAO implements CrudDAO<ERSUsers> {
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when tyring to delete from the database.");
         }
-
-
     }
 
     @Override
@@ -65,7 +63,7 @@ public class UserDAO implements CrudDAO<ERSUsers> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ERSUsers user = new ERSUsers(rs.getString("id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
+                ERSUsers user = new ERSUsers(rs.getString("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
                 userList.add(user);
             }
 
@@ -75,29 +73,6 @@ public class UserDAO implements CrudDAO<ERSUsers> {
 
         return userList;
     }
-    public void resetP(String id, String password) {
-        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
-            ps.setString(1, password);
-            ps.setString(2, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new InvalidSQLException("Error connecting to database");
-        }
-
-    }
-    public String getRoleId(String role){
-        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM user_roles WHERE role = ?");
-            ps.setString(1,role);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getString("role_id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new InvalidSQLException("Error connecting to database");
-        }
-        return null;
-    }
 
     public ERSUsers getUserByUsername(String username) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
@@ -106,7 +81,7 @@ public class UserDAO implements CrudDAO<ERSUsers> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new ERSUsers(rs.getString("id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
+                return new ERSUsers(rs.getString("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
             }
 
         } catch (SQLException e) {
@@ -140,19 +115,31 @@ public class UserDAO implements CrudDAO<ERSUsers> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())
-                return new ERSUsers(rs.getString("id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
+                return new ERSUsers(rs.getString("user_id"), rs.getString("username"), rs.getString("email"), rs.getString("password"), rs.getString("first"), rs.getString("last"), rs.getBoolean("active"), rs.getString("role"));
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when tyring to save to the database.");
         }
 
         return null;
     }
-    public void setStatus(String id, boolean status, String role) {
+
+    public void setStatus(String id, boolean status) {
         try(Connection con = ConnectionFactory.getInstance().getConnection( )) {
-            PreparedStatement ps = con.prepareStatement("UPDATE users SET is_active = ?,role_id = ? WHERE user_id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET active = ? WHERE user_id = ?");
             ps.setBoolean(1, status);
-            ps.setString(2, role);
-            ps.setString(3, id);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+    }
+
+    public void resetP(String id, String password) {
+        try(Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET password = ? WHERE user_id = ?");
+            ps.setString(1, password);
+            ps.setString(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");

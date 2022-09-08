@@ -1,0 +1,77 @@
+drop table if exists users cascade;
+
+drop table if exists reimbursements cascade;
+
+drop table if exists r_statuses cascade;
+
+drop table if exists r_types cascade;
+
+drop table if exists user_roles cascade;
+
+
+
+create table users (
+
+user_id varchar not null,
+username varchar not null,
+email varchar not null,
+password varchar not null,
+first varchar not null,
+last varchar not null,
+active boolean not null,
+role varchar not null,
+constraint pk_users_id
+primary key (user_id)
+);
+
+
+
+create table user_roles (
+
+role_id varchar,
+role varchar,
+constraint pk_role_id
+primary key (role_id)
+);
+
+
+
+create table r_statuses (
+
+status_id varchar,
+status varchar,
+constraint pk_r_statuses_id
+primary key (status_id)
+);
+
+
+
+create table r_types (
+type_id varchar,
+type varchar,
+constraint pk_r_types
+primary key (type_id)
+);
+
+
+
+create table reimbursements (
+
+reimb_id varchar not null,
+amount int not null,
+submitted timestamp not null,
+resolved timestamp,
+description varchar not null,
+receipt int,
+payment_id varchar,
+author_id varchar not null,
+resolver_id varchar,
+status_id varchar not null,
+type_id varchar not null,
+constraint pk_reimbursements_id
+primary key (reimb_id),
+constraint fk_author_id
+foreign key (author_id) references users (user_id),
+constraint fk_status_id
+foreign key (status_id) references r_statuses (status_id)
+);

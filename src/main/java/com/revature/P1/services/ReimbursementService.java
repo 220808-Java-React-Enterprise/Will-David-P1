@@ -16,8 +16,8 @@ public class ReimbursementService {
         return rDAO.getAllByReimID(id);
     }
 
-    public void updateStatus(ERSReimbursements p){
-        rDAO.update(p);
+    public void updateStatus(String reimID, String resolver, String status){
+        rDAO.updateStatus(reimID, resolver, status);
 
     }
     public List<ERSReimbursements> listAllByStatus(String p){

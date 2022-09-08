@@ -1,0 +1,6 @@
+insert into users (user_id, username, email, password, first, last, active, role) values ('123', 'jimmy99', 'email', 'password', 'first', 'last', true, 'default');
+
+insert into r_types (type_id, type) values ('a', 'Lodging');
+insert into r_types (type_id, type) values ('b', 'Travel');
+insert into r_types (type_id, type) values ('c', 'Food');
+insert into r_types (type_id, type) values ('d', 'Other');

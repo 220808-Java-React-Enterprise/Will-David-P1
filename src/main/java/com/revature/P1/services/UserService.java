@@ -24,31 +24,6 @@ public class UserService {
 
     }
 
-
-    public PrincipalResponse login(LoginRequest request) {
-        ERSUsers account = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
-
-        if (account == null) throw new AuthenticationException("\nIncorrect username or password.");
-        return new PrincipalResponse(account.getuID(), account.getuName(), account.getEmail(), account.getFirst(), account.getLast(), account.isActive(), account.getRole());
-    }
-
-
-
-    public boolean isValidUsername(String username) {
-        if (!username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"))
-            throw new InvalidUserException("\nInvalid username! Username must be 8-20 characters long. no _ or . at the beginning. no __ or _. or ._ or .. inside!");
-        return true;
-    }
-
-    public boolean isValidPassword(String pass) {
-        if (pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) throw new InvalidUserException("\nInvalid password! Minimum eight characters, at least one letter, one number, and a special character include a special character(@,$,#.etc).");
-        return true;
-    }
-
-    public void saveAcc(ERSUsers account) {
-        userDAO.save(account);
-    }
-
     public ERSUsers register(NewUserRequest request) {
         ERSUsers user = null;
 
@@ -65,10 +40,13 @@ public class UserService {
 
         return user;
     }
-    public ERSUsers getById(String id) {
-        ERSUsers user = userDAO.getById(id);
-        if (user == null) throw new InvalidRequestException("User not found");
-        return user;
+
+    public PrincipalResponse login(LoginRequest request) {
+        ERSUsers account = userDAO.getUserByUsernameAndPassword(request.getUsername(), request.getPassword());
+
+        if (account == null) throw new AuthenticationException("\nIncorrect username or password.");
+        if (!account.isActive()) throw new AuthenticationException("\nAccount not yet approved.");
+        return new PrincipalResponse(account.getuID(), account.getuName(), account.getEmail(), account.getFirst(), account.getLast(), account.isActive(), account.getRole());
     }
 
     public boolean isDuplicateUsername(String username) {
@@ -81,9 +59,44 @@ public class UserService {
         return true;
     }
 
+    public boolean isValidUsername(String username) {
+        if (!username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$"))
+            throw new InvalidUserException("\nInvalid username! Username must be 8-20 characters long. no _ or . at the beginning. no __ or _. or ._ or .. inside!");
+        return true;
+    }
+
+    public boolean isValidPassword(String pass) {
+        if (pass.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) throw new InvalidUserException("\nInvalid password! Minimum eight characters, at least one letter, one number, and a special character include a special character(@,$,#.etc).");
+        return true;
+    }
+
+    public ERSUsers getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
+    }
+
+    public void saveAcc(ERSUsers account) {
+        userDAO.save(account);
+    }
+
     public List<ERSUsers> getAllAccounts() {
         return userDAO.getAll();
     }
+
+    public void activate(String id, boolean status) {
+        userDAO.setStatus(id, status);
+    }
+
+    public void resetPassword(ResetPasswordReq r) {
+        if(isValidPassword(r.getPassword1())){
+            if(isSamePassword(r.getPassword1(),r.getPassword2())){
+                userDAO.resetP(r.getId(), r.getPassword1());
+            }
+        }
+
+    }
+    /*public List<ERSUsers> getAllById(String id) {
+        return userDAO.getById(id);
+    }*/
 
     public static byte[] getSHA(String input){
         try{
@@ -107,31 +120,6 @@ public class UserService {
             hexString.insert(0,'0'); //pads with 0s
         }
         return hexString.toString();
-    }
-    public void deleteUser(String p){
-        userDAO.delete(p);
-    }
-
-    public ERSUsers getUserByUsername(String p){
-        return userDAO.getUserByUsername(p);
-    }
-
-    public void resetPassword(ResetPasswordReq r) {
-        if(isValidPassword(r.getPassword1())){
-            if(isSamePassword(r.getPassword1(),r.getPassword2())){
-                userDAO.resetP(r.getId(), r.getPassword1());
-            }
-        }
-
-    }
-    public void deactivate(UserRequest req) {
-        userDAO.setStatus(req.getuID(), false, userDAO.getRoleId(req.getRole()));
-
-    }
-    public void activate(UserRequest req) {
-
-        userDAO.setStatus(req.getuID(), true, userDAO.getRoleId(req.getRole()));
-
     }
 }
 
