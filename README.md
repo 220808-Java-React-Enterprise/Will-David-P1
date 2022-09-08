@@ -39,6 +39,7 @@ to approve and deny requests for expense reimbursement.
 + Junit
 + Mockito
 + Postman
++ Dbeaver
 + AWS EC2
 
 # Contributors
