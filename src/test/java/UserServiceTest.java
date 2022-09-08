@@ -69,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_isValidRegistration_givenGoodCredentials() {
+    public void test_isValidRegistration_givenValidCredentials() {
         NewUserRequest request = new NewUserRequest(
                 "Userrrr999",
                 "myemail@gmail.com",
@@ -84,7 +84,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = AuthenticationException.class)
-    public void test_isInvalidLogin_givenBadCredentials() {
+    public void test_isInvalidLogin_givenInvalidCredentials() {
         UserService spiedSut = Mockito.spy(user);
         LoginRequest invalidReq = new LoginRequest("username1", "P@ssw0rd");
         when(spiedSut.isValidUsername(invalidReq.getUsername())).thenReturn(true);
